@@ -5,7 +5,7 @@
 #DBの初期化
 docker exec -it <コンテナ名> bash
 
-cd ./test_app
+cd ./app
 
 export FLASK_APP=models.py
 flask db init

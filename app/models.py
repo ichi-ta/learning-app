@@ -17,7 +17,6 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
 class User(UserMixin, db.Model):
-    # テーブル名を指定
     __tablename__ = 'Users'
 
     #各種カラムの追加
@@ -35,3 +34,23 @@ class User(UserMixin, db.Model):
     # 入力されたパスワードが登録されているパスワードハッシュと一致するかを確認
     def check_password(self, password):
             return check_password_hash(self.password, password)
+
+class QuestionSet(db.Model):
+    __tablename__ = 'QuestionSets'
+
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(128))
+    author = db.Column(db.String(128))
+    questions = db.relationship('Questions',backref='QuestionSets')
+
+class Question(db.Model):
+    __tablename__ = 'Questions'
+
+    id = db.Column(db.Integer, primary_key=True)
+    questionset_id = db.Column(db.Integer, db.ForeignKey("QuestionSets.id"))
+    sentence = db.Column(db.String(128))
+    choice1 = db.Column(db.String(128))
+    choice2 = db.Column(db.String(128))
+    choice3 = db.Column(db.String(128))
+    choice4 = db.Column(db.String(128))
+    correctans = db.Column(db.String(128))
