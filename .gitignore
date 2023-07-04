@@ -1,0 +1,8 @@
+data_mysql
+app/migrations
+app/__pycache__
+app/src/creates/__pycache__
+app/src/logins/__pycache__
+app/src/questions/__pycache__
+app/src/sets/__pycache__
+app/src/users/__pycache__
