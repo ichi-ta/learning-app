@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="css/login_style.css">
+</head>
+<body>
+
+  <form class="form" action="#" method="post"> <!-- action 送信先URL method データの送信方法 -->
+
+    <h1 class="head">ログイン</h1>
+
+    <div class="item">
+      <label for="name">User Name (max 10 characters)</label>
+      <input type="text" id="name" placeholder="名前を入力" maxlength="10" required>
+    </div>
+
+    <div class="item">
+      <label for="password">Password (max 10 characters)</label>
+    <input type="password" id="password" placeholder="パスワードを入力" maxlength="10" required><br>
+    </div>
+
+    <button class="styled"type="button">ログイン</button>
+    <p>または、<a href="">アカウント作成</a></p>
+
+  </form>
+
+</body>
+</html>
