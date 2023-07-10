@@ -17,10 +17,8 @@ db = SQLAlchemy(app)
 migrate = Migrate(app, db)
 
 class User(UserMixin, db.Model):
-    # テーブル名を指定
     __tablename__ = 'Users'
 
-    #各種カラムの追加
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128))
     role = db.Column(db.Boolean, default=False, nullable=False)
@@ -34,4 +32,28 @@ class User(UserMixin, db.Model):
 
     # 入力されたパスワードが登録されているパスワードハッシュと一致するかを確認
     def check_password(self, password):
-            return check_password_hash(self.password, password)
+        return check_password_hash(self.password, password)
+
+class QuestionSet(db.Model):
+    __tablename__ = 'questionset'
+    
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(128))
+    user_id = db.Column(db.Integer)
+
+    questions = db.relationship("Question", back_populates="questionset")
+
+class Question(db.Model):
+    __tablename__ = 'question'
+
+    id = db.Column(db.Integer, primary_key=True)
+    text = db.Column(db.String(255))
+    sentence = db.Column(db.String(128))
+    choice1 = db.Column(db.String(128))
+    choice2 = db.Column(db.String(128))
+    choice3 = db.Column(db.String(128))
+    choice4 = db.Column(db.String(128))
+    correctans = db.Column(db.String(128))
+    questionset_id = db.Column(db.Integer, db.ForeignKey('questionset.id'))
+
+    questionset = db.relationship("QuestionSet", back_populates="questions")
