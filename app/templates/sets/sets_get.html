@@ -20,7 +20,7 @@
     </tr>
     {% for set in sets %}
     <tr>
-      <td>{{ set.name }}</td>
+      <td><a href="/{{ set.user_id }}/users/{{ set.id }}">{{ set.name }}</a></td>
     </tr>
     {% endfor %}
     </table>
