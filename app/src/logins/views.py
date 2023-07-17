@@ -1,7 +1,6 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash, session
 from flask_login import login_user, logout_user
 
-from app import app
 from app.models import User
 
 logins = Blueprint("logins", __name__)

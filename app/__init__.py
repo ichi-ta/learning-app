@@ -10,5 +10,7 @@ def top_get():
   return redirect(url_for("logins.login_post"))
 
 from app.src.logins.views import logins
+from app.src.users.views import users
 
 app.register_blueprint(logins)
+app.register_blueprint(users)
