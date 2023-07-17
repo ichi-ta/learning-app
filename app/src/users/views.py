@@ -18,4 +18,4 @@ def user_new():
     user.set_password(request.form["password"])
     db.session.add(user)
     db.session.commit()
-    return redirect(url_for('top_get'))
+    return redirect(url_for('top_get')) 

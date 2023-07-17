@@ -11,20 +11,11 @@ login = LoginManager(app)
 def load_user(id):
     return User.query.get(int(id))
 
-@logins.route("/")
-def jump_login():
-  if current_user.is_authenticated:
-    return redirect(url_for('top_get'))
-  return redirect(url_for('logins.login_get'))
-
-@logins.route("/top",methods=["GET"])
-@login_required
-def top_get():
-  return render_template("top.html")
-
 @logins.route('/login', methods=['GET'])
 def login_get():
-  return render_template('login.html')
+    if current_user.is_authenticated:
+        return redirect(url_for('top_get'))
+    return render_template('login.html')
 
 @logins.route('/login', methods=['POST'])
 def login_post():
@@ -38,4 +29,4 @@ def login_post():
 @logins.route('/logout')
 def logout():
     logout_user()
-    return redirect("logins.login_get")
+    return redirect("/login") 
