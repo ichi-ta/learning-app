@@ -9,7 +9,6 @@ def top_get():
   return render_template("top.html")
 
 from app.src.logins.views import logins
-from app.src.users.views import users
 from app.src.sets.views import sets
 
 app.register_blueprint(logins)
