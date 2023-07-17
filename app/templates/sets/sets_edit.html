@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+    <meta charset="UTF-8">
+    <title>問題セットの編集</title>
+</head>
+<body>
+  <h1>問題セットの編集: {{ set.name }}</h1>
+  <form action="{{ url_for('sets.set_edit', set_id=set.id) }}" method="POST">
+    <input type="hidden" name="action" value="update_set">
+    セット名:<input name="set_name" value="{{ set.name }}"></input>
+    <input type="submit" value="セット名を変更">
+  </form>
+  <form action="{{ url_for('sets.set_edit', set_id=set.id) }}" method="POST">
+    <input type="hidden" name="action" value="add_question">
+    <div>
+        問題文:<input name="question_sentence"></input>
+    </div>
+    <div>
+        選択肢1:<input name="choice1"></input>
+    </div>
+    <div>
+        選択肢2:<input name="choice2"></input>
+    </div>
+    <div>
+        選択肢3:<input name="choice3"></input>
+    </div>
+    <div>
+        選択肢4:<input name="choice4"></input>
+    </div>
+    <div>
+        正解:<input name="correctans"></input>
+    </div>
+    <div>
+        <input type="submit" value="新しい問題を追加">
+    </div>
+  </form>
+  <a href="{{ url_for('sets.set_list') }}">戻る(×マーク)</a>
+  <h2>問題一覧</h2>
+
+  <!-- 問題の削除を通知する -->
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+      <ul class=flashes>
+      {% for message in messages %}
+        {{ message }}
+      {% endfor %}
+      </ul>
+    {% endif %}
+  {% endwith %}
+
+  <table>
+      <tr>
+        <th>問題文</th>
+        <th>選択肢1</th>
+        <th>選択肢2</th>
+        <th>選択肢3</th>
+        <th>選択肢4</th>
+        <th>正解</th>
+      </tr>
+      {% for question in set.questions %}
+      <tr>
+        <td>{{ question.sentence }}</td>
+        <td>{{ question.choice1 }}</td>
+        <td>{{ question.choice2 }}</td>
+        <td>{{ question.choice3 }}</td>
+        <td>{{ question.choice4 }}</td>
+        <td>{{ question.correctans }}</td>
+        <td>
+          <form method="POST" action="{{ url_for('sets.delete_question', question_id=question.id) }}">
+            <input type="submit" value="削除">
+          </form>
+        </td>
+      </tr>
+      {% endfor %}
+  </table>
+</body>
+</html>
