@@ -1,9 +1,15 @@
-from flask import Flask
+from flask import Flask, render_template, redirect, url_for
+from flask_login import current_user, login_required
 
 app = Flask(__name__)
 
-#from app.src.users.views import users
-from app.src.logins.views import logins
+@app.route("/top",methods=["GET"])
+@login_required
+def top_get():
+  return render_template("top.html")
 
-#app.register_blueprint(users)
+from app.src.logins.views import logins
+from app.src.users.views import users
+
 app.register_blueprint(logins)
+app.register_blueprint(users)
