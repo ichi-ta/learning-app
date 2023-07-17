@@ -5,9 +5,9 @@
     <title>{{ set.name }}</title>
 </head>
 <body>
+    <a href="{{ url_for('sets.set_list') }}">問題一覧に戻る</a>
     <h1>{{ set.name }}</h1>
     <a href="{{ url_for('sets.set_edit', set_id=set.id) }}">編集</a>
     <a href="{{ url_for('sets.set_start', set_id=set.id) }}">始める</a>
-    <a href="{{ url_for('sets.set_list') }}">問題一覧に戻る</a>
 </body>
 </html>

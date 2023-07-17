@@ -35,7 +35,7 @@
         <input type="submit" value="新しい問題を追加">
     </div>
   </form>
-  <a href="{{ url_for('sets.set_list') }}">戻る(×マーク)</a>
+  <a href="{{ url_for('sets.set_detail', set_id=set.id) }}">戻る(×マーク)</a>
   <h2>問題一覧</h2>
 
   <!-- 問題の削除を通知する -->
