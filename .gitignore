@@ -6,3 +6,4 @@ app/src/logins/__pycache__
 app/src/questions/__pycache__
 app/src/sets/__pycache__
 app/src/users/__pycache__
+app/templates/users/all_user.html

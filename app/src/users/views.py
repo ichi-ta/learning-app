@@ -5,11 +5,6 @@ from app.models import db, User
 
 users = Blueprint("users", __name__)
 
-@users.route("/all_users", methods=["GET"])
-def all_user_get():
-    users = User.query.all()
-    return render_template("users/all_user.html", users=users)
-
 @users.route("/user/new", methods=['GET'])
 def user_new_form():
     return render_template("users/user_new.html")
@@ -26,9 +21,18 @@ def user_new():
     db.session.commit()
     return redirect(url_for('logins.top_get'))
 
+#ユーザを確認するための処理（管理者のみ）
+'''
+@users.route("/all_users", methods=["GET"])
+def all_user_get():
+    users = User.query.all()
+    return render_template("users/all_user.html", users=users)
+
 @users.route("/user/<id>/delete",methods=["POST"])
 def user_delete(id):
     user = User.query.filter(User.id==id).first()
     db.session.delete(user)
     db.session.commit()
     return redirect(url_for('users.all_user_get'))
+'''
+
