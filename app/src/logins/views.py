@@ -31,7 +31,7 @@ def login_post():
         session["flag"] = True
         session["username"] = username
     if session["flag"]:
-        return render_template('top.html', username=session["username"])
+        return render_template('top', username=session["username"])
     else:
         return redirect('/login')
 
