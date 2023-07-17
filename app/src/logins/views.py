@@ -11,15 +11,25 @@ login = LoginManager(app)
 def load_user(id):
     return User.query.get(int(id))
 
+@logins.route("/")
+def jump_login():
+  return redirect(url_for('logins.login_get'))
+
+@logins.route("/top",methods=["GET"])
+@login_required
+def top_get():
+  user = User.query.filter(User.id == current_user.id).first()
+  return render_template("top.html",user=user)
+
 @logins.route('/login', methods=['GET'])
 def login_get():
-    if current_user.is_authenticated:
-        return redirect(url_for('top_get'))
-    return render_template('login.html')
+  if current_user.is_authenticated:
+    return redirect(url_for('logins.top_get'))
+  return render_template('login.html')
 
 @logins.route('/login', methods=['POST'])
 def login_post():
-    user = User.query.filter_by(mail=request.form["mail"]).one_or_none()
+    user = User.query.filter(User.mail==request.form["mail"]).one_or_none()
     if user is None or not user.check_password(request.form["password"]):
         flash('メールアドレスかパスワードが間違っています')
         return redirect(url_for('logins.login_post'))
@@ -29,4 +39,4 @@ def login_post():
 @logins.route('/logout')
 def logout():
     logout_user()
-    return redirect("/login") 
+    return render_template("login.html")

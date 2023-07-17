@@ -3,29 +3,35 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Document</title>
+  <title>ログイン</title>
   <link rel="stylesheet" href="{{url_for('static', filename='login_style.css')}}">
 </head>
 <body>
 
-  <form class="form" action="#" method="post"> <!-- action 送信先URL method データの送信方法 -->
+  <form action="/login" method="post" class="form" > <!-- action 送信先URL method データの送信方法 -->
 
     <h1 class="head">ログイン</h1>
 
-    <div  class="item">
-      <label for="email">Email</label>
-      <input type="email" name="email" placeholder="info@example.com" required />
+    <div class="item">
+      Email<input name="mail" type="email" placeholder="info@example.com"></input>
     </div>
 
     <div class="item">
-      <label for="password">Password (max 10 characters)</label>
-    <input type="password" id="password" placeholder="パスワードを入力" maxlength="10" required><br>
+      Password (max 10 characters)<input name="password" type="password" placeholder="パスワードを入力" maxlength="10"></input>
     </div>
 
-    <button onclick="location.href='top'"class="styled"type="button">ログイン</button>
-    <p>または、<a href="top">アカウント作成</a></p>
+    <input type="submit" class="styled" value="ログイン">
+    <p>または、<a href="/user/new">アカウント作成</a></p>
 
   </form>
-
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <ul class=flashes>
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+  {% endwith %}
 </body>
 </html>
