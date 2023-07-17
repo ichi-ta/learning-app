@@ -47,7 +47,6 @@ class Question(db.Model):
     __tablename__ = 'question'
 
     id = db.Column(db.Integer, primary_key=True)
-    text = db.Column(db.String(255))
     sentence = db.Column(db.String(128))
     choice1 = db.Column(db.String(128))
     choice2 = db.Column(db.String(128))
