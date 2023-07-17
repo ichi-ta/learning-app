@@ -17,6 +17,11 @@ def jump_login():
     return redirect(url_for('top_get'))
   return redirect(url_for('logins.login_get'))
 
+@logins.route("/top",methods=["GET"])
+@login_required
+def top_get():
+  return render_template("top.html")
+
 @logins.route('/login', methods=['GET'])
 def login_get():
   return render_template('login.html')
@@ -28,9 +33,9 @@ def login_post():
         flash('メールアドレスかパスワードが間違っています')
         return redirect(url_for('logins.login_post'))
     login_user(user)
-    return redirect(url_for('top_get'))
+    return redirect(url_for('logins.top_get'))
 
 @logins.route('/logout')
 def logout():
     logout_user()
-    return redirect("/login")
+    return redirect("logins.login_get")
