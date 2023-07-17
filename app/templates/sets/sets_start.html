@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+    <meta charset="UTF-8">
+    <title>問題を開始</title>
+    <script>
+    let currentQuestionIndex = 0;
+    const questions = {{ questions|tojson|safe }};
+    window.onload = function() {
+        showQuestion();
+        document.getElementById('next').addEventListener('click', function() {
+            currentQuestionIndex++;
+            showQuestion();
+        });
+        document.getElementById('previous').addEventListener('click', function() {
+            currentQuestionIndex--;
+            showQuestion();
+        });
+        document.getElementById('submit').addEventListener('click', function() {
+            checkAnswer();
+        });
+    };
+    function showQuestion() {
+        if (currentQuestionIndex < 0) {
+            currentQuestionIndex = 0;
+        } else if (currentQuestionIndex >= questions.length) {
+            currentQuestionIndex = questions.length - 1;
+        }
+        const question = questions[currentQuestionIndex];
+        document.getElementById('question').innerText = "問題: " + question.sentence;
+        document.getElementById('label1').innerText = question.choice1;
+        document.getElementById('label2').innerText = question.choice2;
+        document.getElementById('label3').innerText = question.choice3;
+        document.getElementById('label4').innerText = question.choice4;
+        document.getElementById('questionIndex').innerText = (currentQuestionIndex + 1) + '/' + questions.length;
+    }
+    function checkAnswer() {
+        const radios = document.getElementsByName('choices');
+        let chosenAnswer;
+        for(let i = 0; i < radios.length; i++) {
+            if (radios[i].checked) {
+                chosenAnswer = radios[i].value;
+                break;
+            }
+        }
+        const correctAnswer = questions[currentQuestionIndex].correctans;
+        if (chosenAnswer == correctAnswer) {
+            alert("正解！");
+            
+        } else {
+            alert("不正解！");
+        }
+    }
+    </script>
+</head>
+<body>
+    <h1 id="question"></h1>
+    <form>
+        <input type="radio" id="choice1" name="choices" value="1"><label id="label1"></label><br>
+        <input type="radio" id="choice2" name="choices" value="2"><label id="label2"></label><br>
+        <input type="radio" id="choice3" name="choices" value="3"><label id="label3"></label><br>
+        <input type="radio" id="choice4" name="choices" value="4"><label id="label4"></label><br>
+    </form>
+    <p id="questionIndex"></p>
+    <button id="previous">戻る</button>
+    <button id="next">次へ</button>
+    <button id="submit">決定</button>
+    <a href="{{ url_for('sets.set_detail', set_id=set.id) }}">問題一覧に戻る(×マーク)</a>
+</body>
+</html>
