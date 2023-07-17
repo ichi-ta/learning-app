@@ -21,6 +21,7 @@
     {% for set in sets %}
     <tr>
       <td>{{ set.name }}</td>
+      <td><a href="/sets/{{ set.id }}/delete" method="post">削除</a></td>
     </tr>
     {% endfor %}
     </table>
