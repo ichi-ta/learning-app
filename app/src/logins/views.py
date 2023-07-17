@@ -1,62 +1,32 @@
-from flask import Flask, Blueprint, render_template, request, redirect, url_for, flash, session
+from flask import Blueprint, render_template, request, redirect, url_for, flash, session
+from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 
 from app import app
+from app.models import User
 
 logins = Blueprint("logins", __name__)
-app.config['SECRET_KEY'] = 'secret_key'
-app.config['USERNAME'] = 'user'
-app.config['PASSWORD'] = 'pass'
+login = LoginManager(app)
 
-@logins.route('/')
-def index():
-    if "flag" in session and session["flag"]:
-        return render_template('top.html', username=session["username"])
-    return redirect('/login')
+@login.user_loader
+def load_user(id):
+    return User.query.get(int(id))
 
 @logins.route('/login', methods=['GET'])
-def login():
-    if "flag" in session and session["flag"]:
-        return redirect('/top')
-    return render_template('login.html')
+def login_get():
+  if current_user.is_authenticated:
+    return redirect(url_for('top_get'))
+  return render_template('login.html')
 
 @logins.route('/login', methods=['POST'])
 def login_post():
-    username = request.form["username"]
-    password = request.form["password"]
-    if username != app.config['USERNAME']:
-        flash('ユーザ名が異なります')
-    elif password != app.config['PASSWORD']:
-        flash('パスワードが異なります')
-    else:
-        session["flag"] = True
-        session["username"] = username
-    if session["flag"]:
-        return render_template('top.html', username=session["username"])
-    else:
-        return redirect('/login')
-
-@logins.route('/top')
-def top():
-    if "flag" in session and session["flag"]:
-        return render_template('top.html', username=session["username"])
-    return render_template('top.html')
-
-
-@logins.route('/contents')
-def contents():
-    if "flag" in session and session["flag"]:
-        return render_template('contents.html', username=session["username"])
-    return redirect('/login')
+    user = User.query.filter_by(mail=request.form["mail"]).one_or_none()
+    if user is None or not user.check_password(request.form["password"]):
+        flash('メールアドレスかパスワードが間違っています')
+        return redirect(url_for('logins.login_post'))
+    login_user(user)
+    return redirect(url_for('top_get'))
 
 @logins.route('/logout')
 def logout():
-    session.pop('username', None)
-    session.pop("flag", None)
-    session["username"] = None
-    session["flag"] = False
-    flash('ログアウトしました')
+    logout_user()
     return redirect("/login")
-
-
-if __name__ == '__main__':
-  app.run(debug=True)
