@@ -10,7 +10,7 @@
         セット名:<input name="set_name"></input>
     </div>
     <div>
-        <input type="submit" value="問題作成">
+        <input type="submit" value="作成">
     </div>
   </form>
   <h1>セット一覧</h1>
@@ -20,7 +20,7 @@
     </tr>
     {% for set in sets %}
     <tr>
-      <td><a href="/{{ set.user_id }}/users/{{ set.id }}">{{ set.name }}</a></td>
+      <td>{{ set.name }}</td>
     </tr>
     {% endfor %}
     </table>
