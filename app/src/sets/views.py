@@ -58,4 +58,16 @@ def delete_question(question_id):
     flash('問題を削除しました')
     return redirect(url_for('sets.set_edit', set_id=question.questionset_id))
 
+@sets.route('/sets/<int:set_id>/delete', methods=['POST'])
+def delete_set(set_id):
+    set = QuestionSet.query.get(set_id)
+    if set is None:
+        flash('Set not found')
+        return redirect(url_for('sets.set_list'))
+    db.session.delete(set)
+    db.session.commit()
+    flash('セットを削除しました')
+    return redirect(url_for('sets.set_list'))
+
+
 
