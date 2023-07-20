@@ -22,6 +22,7 @@ class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128))
     role = db.Column(db.Boolean, default=False, nullable=False)
+    question_sets = db.relationship('QuestionSet', backref='user', lazy=True)
 
     mail = db.Column(db.String(128), unique=True)
     password = db.Column(db.String(128))
@@ -39,7 +40,7 @@ class QuestionSet(db.Model):
     
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128))
-    user_id = db.Column(db.Integer)
+    user_id = db.Column(db.Integer, db.ForeignKey('Users.id'))
 
     questions = db.relationship("Question", back_populates="questionset")
 

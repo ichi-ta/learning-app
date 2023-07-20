@@ -10,7 +10,7 @@ sets = Blueprint("sets",__name__)
 @sets.route("/sets", methods=["GET", "POST"])
 def set_list():
   if request.method == "POST":
-    set = QuestionSet(name=request.form["set_name"])
+    set = QuestionSet(name=request.form["set_name"], user_id=current_user.id)
     db.session.add(set)
     db.session.commit()
     return redirect(url_for('sets.set_list'))
