@@ -19,7 +19,7 @@ def user_new():
     user.set_password(request.form["password"])
     db.session.add(user)
     db.session.commit()
-    return redirect(url_for('logins.top_get'))
+    return redirect(url_for('logins.jump_login'))
 
 #ユーザを確認するための処理（管理者のみ）
 '''
