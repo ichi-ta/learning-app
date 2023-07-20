@@ -11,9 +11,15 @@ def user_new_form():
 
 @users.route("/user/new",methods=['POST'])
 def user_new():
-    #mailカラムの追加
+    #教員であればroleカラムに1を格納
+    if request.form["teacher"]:
+        role = 1
+    else:
+        role = 0
+
     user = User(
         name=request.form["user_name"],
+        role=role,
         mail=request.form["mail"]
     )
     user.set_password(request.form["password"])
