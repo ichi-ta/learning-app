@@ -78,7 +78,9 @@ def set_start(set_id):
   if set is None:
     abort(404)
 
-  # Get the questions of the set
+  set.learn_count += 1
+  db.session.commit()
+  
   questions = Question.query.filter_by(questionset_id=set.id).all()
 
   # Convert each question to a dict that can be serialized to JSON

@@ -37,10 +37,12 @@ class User(UserMixin, db.Model):
 
 class QuestionSet(db.Model):
     __tablename__ = 'questionset'
-    
+
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128))
     user_id = db.Column(db.Integer, db.ForeignKey('Users.id'))
+    learn_count = db.Column(db.Integer, default=0)
+    good_count = db.Column(db.Integer, default=0)
 
     questions = db.relationship("Question", back_populates="questionset")
 
