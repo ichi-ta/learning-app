@@ -1,7 +1,0 @@
-.message{ 
-    display: none;
-  }
-  /** チェックONなら表示 */
-  input:checked ~ .message{
-    display: block;
-  }
