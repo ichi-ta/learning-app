@@ -3,19 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <title>問題一覧</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{{url_for('static', filename='sets_list_style.css')}}">
 </head>
 <body>
-  <a href="/top">トップに戻る</a>
+  <div class="kakoi">
+    <a href="/top" class="ue">トップに戻る</a>
   <form action="/sets" method="POST">
     <div>
-        セット名:<input name="set_name"></input>
+        <p class="moji">セット名</p>
+        <input name="set_name" placeholder="セット名"></input>
     </div>
-    <div>
-        <input type="submit" value="問題作成">
+    <div class="abc">
+        <input type="submit" value="問題作成" class="styled">
     </div>
   </form>
 
-  <h1>セット一覧</h1>
+  <h2>セット一覧</h2>
     <table>
     <tr>
       <th >セット名</th>
@@ -29,11 +33,13 @@
       <td>{{ set.user.name }}</td>
       <td>
         <form action="{{ url_for('sets.delete_set', set_id=set.id) }}" method="POST">
-          <input type="submit" value="削除">
+          <input type="submit" value="削除" class="styled1">
         </form>
       </td>
     </tr>
     {% endfor %}
     </table>
+  </div>
+  
 </body>
 </html>
