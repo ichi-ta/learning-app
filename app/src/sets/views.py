@@ -15,8 +15,8 @@ def set_list():
     db.session.commit()
     return redirect(url_for('sets.set_list'))
   else: # GET
-    set = QuestionSet.query.all()
-    return render_template("sets/sets_list.html",sets=set)
+    set = QuestionSet.query.filter(QuestionSet.user_id == current_user.id).all()
+    return render_template("sets/sets_list.html", sets=set)
 
 @sets.route("/sets/<int:set_id>", methods=["GET"])
 def set_detail(set_id):
