@@ -16,17 +16,29 @@
   </form>
 
   <h1>セット一覧</h1>
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <ul class=flashes>
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+  {% endwith %}
+  <h2>マイ問題セット</h2>
     <table>
     <tr>
       <th >セット名</th>
       <th >作成者名</th>
     </tr>
-    {% for set in sets %}
+    {% for set in s_sets %}
     <tr>
       <td>
         <a href="{{ url_for('sets.set_detail', set_id=set.id) }}">{{ set.name }}</a>
       </td>
       <td>{{ set.user.name }}</td>
+      <td><a href="{{ url_for('sets.set_start', set_id=set.id) }}">始める</a></td>
+      <td><a href="{{ url_for('sets.set_edit', set_id=set.id) }}">編集</a></td>
       <td>
         <form action="{{ url_for('sets.delete_set', set_id=set.id) }}" method="POST">
           <input type="submit" value="削除">
@@ -36,8 +48,23 @@
     {% endfor %}
     </table>
 
+    <h2>教員の問題セット</h2>
+    <table>
+      <tr>
+        <th >セット名</th>
+        <th >作成者名</th>
+      </tr>
+      {% for set in t_sets %}
+      <tr>
+        <td>{{ set.name }}</td>
+        <td>{{ set.user.name }}</td>
+        <td><a href="{{ url_for('sets.set_start', set_id=set.id) }}">始める</a></td>
+      </tr>
+      {% endfor %}
+    </table>
+
     <!-- roleがTrue(先生)の場合のみ生徒の解答を表示 -->
-    {% if current_user.role == True %}
+    {% if current_user.role == 1 %}
         <table class="table">
             <thead>
                 <tr>
