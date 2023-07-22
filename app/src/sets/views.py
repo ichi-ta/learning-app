@@ -15,16 +15,17 @@ def set_list():
     db.session.commit()
     return redirect(url_for('sets.set_list'))
   else: # GET
-    set = QuestionSet.query.all()
-    return render_template("sets/sets_list.html",sets=set)
+    set = QuestionSet.query.filter(QuestionSet.user_id == current_user.id).all()
+    return render_template("sets/sets_list.html", sets=set)
 
 @sets.route("/sets/<int:set_id>", methods=["GET"])
 def set_detail(set_id):
-  set = QuestionSet.query.get(set_id)
-  if set is None:
-    abort(404)
+    set = QuestionSet.query.get(set_id)
+    if set is None:
+        abort(404)
 
-  return render_template("sets/sets_detail.html", set=set)
+    answers = [question.correctans for question in set.questions]
+    return render_template("sets/sets_detail.html", set=set, answers=answers)
 
 
 @sets.route("/sets/<int:set_id>/edit", methods=["GET", "POST"])

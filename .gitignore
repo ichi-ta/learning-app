@@ -1,4 +1,5 @@
 data_mysql
+migrations
 app/migrations
 app/__pycache__
 app/src/creates/__pycache__
