@@ -25,11 +25,13 @@
         </ul>
     {% endif %}
   {% endwith %}
+
   <h2>マイ問題セット</h2>
     <table>
     <tr>
       <th >セット名</th>
       <th >作成者名</th>
+      <th>学習回数</th>
     </tr>
     {% for s_set in s_sets %}
     <tr>
@@ -37,6 +39,7 @@
         <a href="{{ url_for('sets.set_detail', set_id=s_set.id) }}">{{ s_set.name }}</a>
       </td>
       <td>{{ s_set.user.name }}</td>
+      <td>{{ s_set.learn_count }}</td>
       <td><a href="{{ url_for('sets.set_start', set_id=s_set.id) }}">始める</a></td>
       <td><a href="{{ url_for('sets.set_edit', set_id=s_set.id) }}">編集</a></td>
       <td>
@@ -51,36 +54,18 @@
     <h2>教員の問題セット</h2>
     <table>
       <tr>
-        <th >教員名</th>
-        <th >問題セット</th>
+        <th>セット名</th>
+        <th>作成者名</th>
+        <th>学習回数</th>
       </tr>
       {% for t_set in t_sets %}
       <tr>
-        <td></td>
         <td>{{ t_set.name }}</td>
+        <td>{{ t_set.user.name }}</td>
+        <td>{{ t_set.learn_count }}</td>
         <td><a href="{{ url_for('sets.set_start', set_id=t_set.id) }}">始める</a></td>
       </tr>
       {% endfor %}
     </table>
-
-    <!-- roleがTrue(先生)の場合のみ生徒の解答を表示 -->
-    {% if current_user.role == 1 %}
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>問題</th>
-                    <th>答え</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for question, answer in questions_and_answers %}
-                <tr>
-                    <td>{{ question.sentence }}</td>
-                    <td>{{ answer }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    {% endif %}
 </body>
 </html>
