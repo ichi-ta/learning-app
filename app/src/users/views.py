@@ -34,6 +34,14 @@ def teacher_list():
     teachers = User.query.filter(User.role==1).all()
     return render_template("users/teacher_list.html", teachers=teachers)
 
+@users.route("/teachers/<id>",methods=["GET"])
+@login_required
+def teacher_detail(id):
+    teacher = User.query.filter(User.role==1, User.id==id).first()
+    teacher_sets = QuestionSet.query.filter(QuestionSet.user_id==teacher.id).all()
+    sets_count = len(teacher_sets)
+    return render_template("users/teacher_detail.html", teacher=teacher, sets=teacher_sets, sets_count=sets_count)
+
 #ユーザを確認するための処理（管理者のみ）
 '''
 @users.route("/all_users", methods=["GET"])
