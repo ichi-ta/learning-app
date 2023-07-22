@@ -8,14 +8,9 @@ label {
     font: 1rem 'Fira Sans', sans-serif;
 }
 
-h1 {
-    padding: 20px 50px 50px 50px;
-}
-
-body{
-    width: 94%;
-    height: auto;
-    margin: 3%;
+.kakoi{
+    width: 35%;
+    margin:0 auto;
     border: 2px solid #000;
     padding: 50px;
     box-sizing: border-box;
@@ -24,59 +19,59 @@ body{
 }
 
 
+
+.kakoi input {
+     padding: 10px;
+     border-radius: 15px;
+     font-size: 1.3rem;
+     border: 1px solid #000;
+}
+
+.moji {
+    font-size: 1.5rem;
+    padding: 20px 0 0 0;
+    margin: 0;
+}
+
+
 .styled {
     border: 0;
-    line-height: 2.25;
-    padding: 0 30px;
-    font-size: 1.25rem;
-    text-align: left;
-    color: #fff;
-    text-shadow: 1px 1px 1px #000;
+    line-height: 1;
+    font-size: 1rem;
+    text-align: center;
+    color: blue;
+    text-shadow: 1px 1px 1px aqua;
     border-radius: 50px;
-    background-color: tomato;
+    background-color: #fff;
     background-image: linear-gradient(to top left, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) 30%, rgba(0, 0, 0, 0));
     box-shadow: inset 2px 2px 3px rgba(255, 255, 255, 0.6), inset -2px -2px 3px rgba(0, 0, 0, 0.6);
 }
 
 .styled:hover {
-    background-color: tomato;
+    background-color: grey;
 }
 
 .styled:active {
     box-shadow: inset -2px -2px 3px rgba(255, 255, 255, 0.6), inset 2px 2px 3px rgba(0, 0, 0, 0.6);
 }
 
-.trim-image-to-circle {
-    background-image: url("user-icon.jpg");  /* 表示する画像 */
-    width:  170px;       /* ※縦横を同値に */
-    height: 170px;       /* ※縦横を同値に */
-    border-radius: 50%;  /* 角丸半径を50%にする(=円形にする) */
-    background-position: center center;  /* 横長画像の左上を基準に表示 */
-    display: inline-block;          /* 複数の画像を横に並べたい場合 */
-    border: 3px solid grey; /* 枠線を付加 */
-}
-
-.styled2 {
+.styled1 {
     border: 0;
-    line-height: 2.25;
-    padding: 0 30px;
-    font-size: 1.25rem;
+    line-height: 1;
+    font-size: 1rem;
     text-align: center;
-    color: #000;
-    text-shadow: 1px 1px 1px #000;
+    color: red;
+    text-shadow: 1px 1px 1px orange;
     border-radius: 50px;
     background-color: #fff;
     background-image: linear-gradient(to top left, rgba(0, 0, 0, 0.2), rgba(0, 0, 0, 0.2) 30%, rgba(0, 0, 0, 0));
     box-shadow: inset 2px 2px 3px rgba(255, 255, 255, 0.6), inset -2px -2px 3px rgba(0, 0, 0, 0.6);
-    margin: 15px;
-    width: 20%;
-    height: 60px;
 }
 
-.styled2:hover {
+.styled1:hover {
     background-color: grey;
 }
 
-.styled2:active {
+.styled1:active {
     box-shadow: inset -2px -2px 3px rgba(255, 255, 255, 0.6), inset 2px 2px 3px rgba(0, 0, 0, 0.6);
 }
