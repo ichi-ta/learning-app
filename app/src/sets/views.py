@@ -30,24 +30,28 @@ def set_detail(set_id):
 @sets.route("/sets/<int:set_id>/edit", methods=["GET", "POST"])
 def set_edit(set_id):
   set = QuestionSet.query.get(set_id)
-  if request.method == "POST":
-    action = request.form.get("action", "update_set")
-    if action == "update_set":
-      set.name = request.form["set_name"]
-      db.session.commit()
-      return redirect(url_for('sets.set_edit', set_id=set_id))
-    elif action == "add_question":
-      question = Question(
-        sentence=request.form.get("question_sentence", ""),
-        choice1=request.form.get("choice1", ""),
-        choice2=request.form.get("choice2", ""),
-        choice3=request.form.get("choice3", ""),
-        choice4=request.form.get("choice4", ""),
-        correctans=request.form.get("correctans", ""),
-        questionset_id=set_id)
-      db.session.add(question)
-      db.session.commit()
-  return render_template("sets/sets_edit.html", set=set)
+  if set.id != current_user.id:
+     flash("他人のセットは編集できません")
+     return redirect(url_for('sets.set_detail', set_id=set_id))
+  else:
+    if request.method == "POST":
+      action = request.form.get("action", "update_set")
+      if action == "update_set":
+        set.name = request.form["set_name"]
+        db.session.commit()
+        return redirect(url_for('sets.set_edit', set_id=set_id))
+      elif action == "add_question":
+        question = Question(
+          sentence=request.form.get("question_sentence", ""),
+          choice1=request.form.get("choice1", ""),
+          choice2=request.form.get("choice2", ""),
+          choice3=request.form.get("choice3", ""),
+          choice4=request.form.get("choice4", ""),
+          correctans=request.form.get("correctans", ""),
+          questionset_id=set_id)
+        db.session.add(question)
+        db.session.commit()
+    return render_template("sets/sets_edit.html", set=set)
 
 @sets.route('/question/<int:question_id>/delete', methods=['POST'])
 def delete_question(question_id):
@@ -63,13 +67,17 @@ def delete_question(question_id):
 @sets.route('/sets/<int:set_id>/delete', methods=['POST'])
 def delete_set(set_id):
     set = QuestionSet.query.get(set_id)
-    if set is None:
-        flash('Set not found')
-        return redirect(url_for('sets.set_list'))
-    db.session.delete(set)
-    db.session.commit()
-    flash('セットを削除しました')
-    return redirect(url_for('sets.set_list'))
+    if set.id != current_user.id:
+       flash('他人のセットは削除できません')
+       return redirect(url_for('sets.set_list'))
+    else:
+      if set is None:
+          flash('Set not found')
+          return redirect(url_for('sets.set_list'))
+      db.session.delete(set)
+      db.session.commit()
+      flash('セットを削除しました')
+      return redirect(url_for('sets.set_list'))
 
 @sets.route("/sets/<int:set_id>/start", methods=["GET"])
 def set_start(set_id):
