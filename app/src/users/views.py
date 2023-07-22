@@ -1,7 +1,8 @@
 from flask import Blueprint, render_template, request, redirect, url_for
-from flask_login import current_user
+from flask_login import current_user, login_required
 
-from app.models import db, User
+
+from app.models import db, User, QuestionSet
 
 users = Blueprint("users", __name__)
 
@@ -26,6 +27,12 @@ def user_new():
     db.session.add(user)
     db.session.commit()
     return redirect(url_for('logins.jump_login'))
+
+@users.route("/teachers",methods=["GET"])
+@login_required
+def teacher_list():
+    teachers = User.query.filter(User.role==1).all()
+    return render_template("users/teacher_list.html", teachers=teachers)
 
 #ユーザを確認するための処理（管理者のみ）
 '''
