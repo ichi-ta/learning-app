@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+    <meta charset="UTF-8">
+    <title>問題一覧</title>
+</head>
+<body>
+  <a href="/top">トップに戻る</a>
+  <h1>教員一覧</h1>
+    <table>
+    <tr>
+      <th >教員名</th>
+      <th >学習セット数</th>
+    </tr>
+    {% for teacher in teachers %}
+    <tr>
+      <td>
+        <a href="{{ url_for('users.teacher_detail', id=teacher.id) }}">{{ teacher.name }}</a>
+      </td>
+      <td>問題セット数</td>
+    </tr>
+    {% endfor %}
+    </table>
+</body>
+</html>

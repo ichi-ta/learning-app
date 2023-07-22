@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="jp">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ teacher.name }}</title>
+</head>
+<body>
+    <a href="{{ url_for('users.teacher_list') }}">教員一覧に戻る</a>
+    <h1>{{ teacher.name }}先生</h1>
+    <h2>問題セット数：{{ sets_count }}</h2>
+    <table>
+        <tr>
+          <th >学習セット</th>
+        </tr>
+        {% for set in sets %}
+        <tr>
+          <td>{{ set.name }}</td>
+          <td>
+            <a href="{{ url_for('sets.set_start', set_id=set.id) }}">始める</a>
+          </td>
+        </tr>
+        {% endfor %}
+        </table>
+</body>
+</html>

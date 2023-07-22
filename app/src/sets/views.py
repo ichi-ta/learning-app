@@ -2,7 +2,7 @@ from flask import Blueprint, render_template, redirect, request, url_for, abort,
 from flask_login import current_user
 
 from app import app
-from app.models import db, QuestionSet,Question
+from app.models import db, User, QuestionSet,Question
 
 sets = Blueprint("sets",__name__)
 
@@ -15,8 +15,11 @@ def set_list():
     db.session.commit()
     return redirect(url_for('sets.set_list'))
   else: # GET
-    set = QuestionSet.query.filter(QuestionSet.user_id == current_user.id).all()
-    return render_template("sets/sets_list.html", sets=set)
+    student_sets = QuestionSet.query.filter(QuestionSet.user_id == current_user.id).all()
+    #ログイン中の生徒の問題セットと教員の問題セットを表示する
+    teachers = db.session.query(User.id).filter(User.role==1).one()
+    teacher_sets = QuestionSet.query.filter(QuestionSet.user_id == teachers.id).all()
+    return render_template("sets/sets_list.html", t_sets=teacher_sets ,s_sets=student_sets)
 
 @sets.route("/sets/<int:set_id>", methods=["GET"])
 def set_detail(set_id):
@@ -31,24 +34,29 @@ def set_detail(set_id):
 @sets.route("/sets/<int:set_id>/edit", methods=["GET", "POST"])
 def set_edit(set_id):
   set = QuestionSet.query.get(set_id)
-  if request.method == "POST":
-    action = request.form.get("action", "update_set")
-    if action == "update_set":
-      set.name = request.form["set_name"]
-      db.session.commit()
-      return redirect(url_for('sets.set_edit', set_id=set_id))
-    elif action == "add_question":
-      question = Question(
-        sentence=request.form.get("question_sentence", ""),
-        choice1=request.form.get("choice1", ""),
-        choice2=request.form.get("choice2", ""),
-        choice3=request.form.get("choice3", ""),
-        choice4=request.form.get("choice4", ""),
-        correctans=request.form.get("correctans", ""),
-        questionset_id=set_id)
-      db.session.add(question)
-      db.session.commit()
-  return render_template("sets/sets_edit.html", set=set)
+  if set.user_id != current_user.id:
+     flash("他人のセットは編集できません")
+     return redirect(url_for('sets.set_detail', set_id=set_id))
+  else:
+    if request.method == "POST":
+      action = request.form.get("action", "update_set")
+      if action == "update_set":
+        set.name = request.form["set_name"]
+        db.session.commit()
+        return redirect(url_for('sets.set_edit', set_id=set_id))
+      #問題の追加
+      elif action == "add_question":
+        question = Question(
+          sentence=request.form.get("question_sentence", ""),
+          choice1=request.form.get("choice1", ""),
+          choice2=request.form.get("choice2", ""),
+          choice3=request.form.get("choice3", ""),
+          choice4=request.form.get("choice4", ""),
+          correctans=request.form.get("correctans", ""),
+          questionset_id=set_id)
+        db.session.add(question)
+        db.session.commit()
+    return render_template("sets/sets_edit.html", set=set)
 
 @sets.route('/question/<int:question_id>/delete', methods=['POST'])
 def delete_question(question_id):
@@ -64,14 +72,19 @@ def delete_question(question_id):
 @sets.route('/sets/<int:set_id>/delete', methods=['POST'])
 def delete_set(set_id):
     set = QuestionSet.query.get(set_id)
-    if set is None:
-        flash('Set not found')
-        return redirect(url_for('sets.set_list'))
-    db.session.delete(set)
-    db.session.commit()
-    flash('セットを削除しました')
-    return redirect(url_for('sets.set_list'))
+    if set.user_id != current_user.id:
+       flash('他人のセットは削除できません')
+       return redirect(url_for('sets.set_list'))
+    else:
+      if set is None:
+          flash('Set not found')
+          return redirect(url_for('sets.set_list'))
+      db.session.delete(set)
+      db.session.commit()
+      flash('セットを削除しました')
+      return redirect(url_for('sets.set_list'))
 
+#問題セットの学習開始
 @sets.route("/sets/<int:set_id>/start", methods=["GET"])
 def set_start(set_id):
   set = QuestionSet.query.get(set_id)
