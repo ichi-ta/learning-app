@@ -1,5 +1,6 @@
 from flask import Blueprint, render_template, redirect, request, url_for, abort,flash
 from flask_login import current_user
+from sqlalchemy.sql import text
 
 from app import app
 from app.models import db, User, QuestionSet,Question
@@ -16,10 +17,8 @@ def set_list():
     return redirect(url_for('sets.set_list'))
   else: # GET
     student_sets = QuestionSet.query.filter(QuestionSet.user_id == current_user.id).all()
-    #ログイン中の生徒の問題セットと教員の問題セットを表示する
     teachers = User.query.filter(User.role==1).all()
-    ids = [id.id for id in teachers]
-    teacher_sets = QuestionSet.query.filter(QuestionSet.user_id == ids).all()
+    teacher_sets = QuestionSet.query.filter(QuestionSet.user_id == teachers[0].id).all()
     return render_template("sets/sets_list.html", t_sets=teacher_sets ,s_sets=student_sets)
 
 @sets.route("/sets/<int:set_id>", methods=["GET"])

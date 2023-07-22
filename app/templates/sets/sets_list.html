@@ -31,16 +31,16 @@
       <th >セット名</th>
       <th >作成者名</th>
     </tr>
-    {% for set in s_sets %}
+    {% for s_set in s_sets %}
     <tr>
       <td>
-        <a href="{{ url_for('sets.set_detail', set_id=set.id) }}">{{ set.name }}</a>
+        <a href="{{ url_for('sets.set_detail', set_id=s_set.id) }}">{{ s_set.name }}</a>
       </td>
-      <td>{{ set.user.name }}</td>
-      <td><a href="{{ url_for('sets.set_start', set_id=set.id) }}">始める</a></td>
-      <td><a href="{{ url_for('sets.set_edit', set_id=set.id) }}">編集</a></td>
+      <td>{{ s_set.user.name }}</td>
+      <td><a href="{{ url_for('sets.set_start', set_id=s_set.id) }}">始める</a></td>
+      <td><a href="{{ url_for('sets.set_edit', set_id=s_set.id) }}">編集</a></td>
       <td>
-        <form action="{{ url_for('sets.delete_set', set_id=set.id) }}" method="POST">
+        <form action="{{ url_for('sets.delete_set', set_id=s_set.id) }}" method="POST">
           <input type="submit" value="削除">
         </form>
       </td>
@@ -51,14 +51,14 @@
     <h2>教員の問題セット</h2>
     <table>
       <tr>
-        <th >セット名</th>
-        <th >作成者名</th>
+        <th >教員名</th>
+        <th >問題セット</th>
       </tr>
-      {% for set in t_sets %}
+      {% for t_set in t_sets %}
       <tr>
-        <td>{{ set.name }}</td>
-        <td>{{ set.user.name }}</td>
-        <td><a href="{{ url_for('sets.set_start', set_id=set.id) }}">始める</a></td>
+        <td></td>
+        <td>{{ t_set.name }}</td>
+        <td><a href="{{ url_for('sets.set_start', set_id=t_set.id) }}">始める</a></td>
       </tr>
       {% endfor %}
     </table>
