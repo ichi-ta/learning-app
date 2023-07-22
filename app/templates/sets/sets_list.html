@@ -8,29 +8,29 @@
 </head>
 <body>
   <div class="kakoi">
-    <a href="/top" class="ue">トップに戻る</a>
-  <form action="/sets" method="POST">
-    <div>
-        <p class="moji">セット名</p>
-        <input name="set_name" placeholder="セット名"></input>
-    </div>
-    <div class="abc">
-        <input type="submit" value="問題作成" class="styled">
-    </div>
-  </form>
+      <a href="/top" class="ue">トップに戻る</a>
+    <form action="/sets" method="POST">
+      <div>
+          <p class="moji">セット名</p>
+          <input name="set_name" placeholder="セット名"></input>
+      </div>
+      <div class="abc">
+          <input type="submit" value="問題作成" class="styled">
+      </div>
+    </form>
 
-  <h1>セット一覧</h1>
-  {% with messages = get_flashed_messages() %}
-    {% if messages %}
-        <ul class=flashes>
-        {% for message in messages %}
-        <li>{{ message }}</li>
-        {% endfor %}
-        </ul>
-    {% endif %}
-  {% endwith %}
+    <h1>セット一覧</h1>
+    {% with messages = get_flashed_messages() %}
+      {% if messages %}
+          <ul class=flashes>
+          {% for message in messages %}
+          <li>{{ message }}</li>
+          {% endfor %}
+          </ul>
+      {% endif %}
+    {% endwith %}
 
-  <h2>マイ問題セット</h2>
+    <h2>マイ問題セット</h2>
     <table>
     <tr>
       <th >セット名</th>
@@ -71,5 +71,6 @@
       </tr>
       {% endfor %}
     </table>
+  </div>
 </body>
 </html>
