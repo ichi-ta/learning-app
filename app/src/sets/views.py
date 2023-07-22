@@ -44,6 +44,7 @@ def set_edit(set_id):
         set.name = request.form["set_name"]
         db.session.commit()
         return redirect(url_for('sets.set_edit', set_id=set_id))
+      #問題の追加
       elif action == "add_question":
         question = Question(
           sentence=request.form.get("question_sentence", ""),
@@ -83,6 +84,7 @@ def delete_set(set_id):
       flash('セットを削除しました')
       return redirect(url_for('sets.set_list'))
 
+#問題セットの学習開始
 @sets.route("/sets/<int:set_id>/start", methods=["GET"])
 def set_start(set_id):
   set = QuestionSet.query.get(set_id)
