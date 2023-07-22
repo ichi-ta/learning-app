@@ -88,9 +88,9 @@ def delete_set(set_id):
 @sets.route("/sets/<int:set_id>/start", methods=["GET"])
 def set_start(set_id):
   set = QuestionSet.query.get(set_id)
+  set.learn_count = 0
   if set is None:
     abort(404)
-
   set.learn_count += 1
   db.session.commit()
   
