@@ -26,6 +26,16 @@
     {% endif %}
   {% endwith %}
   <h2>マイ問題セット</h2>
+  {% with messages = get_flashed_messages() %}
+    {% if messages %}
+        <ul class=flashes>
+        {% for message in messages %}
+        <li>{{ message }}</li>
+        {% endfor %}
+        </ul>
+    {% endif %}
+  {% endwith %}
+  <h2>マイ問題セット</h2>
     <table>
     <tr>
       <th >セット名</th>
@@ -47,6 +57,21 @@
       </td>
     </tr>
     {% endfor %}
+    </table>
+
+    <h2>教員の問題セット</h2>
+    <table>
+      <tr>
+        <th >セット名</th>
+        <th >作成者名</th>
+      </tr>
+      {% for set in t_sets %}
+      <tr>
+        <td>{{ set.name }}</td>
+        <td>{{ set.user.name }}</td>
+        <td><a href="{{ url_for('sets.set_start', set_id=set.id) }}">始める</a></td>
+      </tr>
+      {% endfor %}
     </table>
 
     <h2>教員の問題セット</h2>

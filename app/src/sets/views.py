@@ -17,8 +17,9 @@ def set_list():
   else: # GET
     student_sets = QuestionSet.query.filter(QuestionSet.user_id == current_user.id).all()
     #ログイン中の生徒の問題セットと教員の問題セットを表示する
-    teachers = db.session.query(User.id).filter(User.role==1).first()
-    teacher_sets = QuestionSet.query.filter(QuestionSet.user_id == teachers.id).all()
+    teachers = User.query.filter(User.role==1).all()
+    ids = [id.id for id in teachers]
+    teacher_sets = QuestionSet.query.filter(QuestionSet.user_id == ids).all()
     return render_template("sets/sets_list.html", t_sets=teacher_sets ,s_sets=student_sets)
 
 @sets.route("/sets/<int:set_id>", methods=["GET"])
