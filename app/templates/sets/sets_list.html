@@ -39,6 +39,7 @@
         <a href="{{ url_for('sets.set_detail', set_id=set.id) }}">{{ set.name }}</a>
       </td>
       <td>{{ set.user.name }}</td>
+      <td>{{ set.learn_count }}</td>
       <td><a href="{{ url_for('sets.set_start', set_id=set.id) }}">始める</a></td>
       <td><a href="{{ url_for('sets.set_edit', set_id=set.id) }}">編集</a></td>
       <td>
@@ -53,13 +54,15 @@
     <h2>教員の問題セット</h2>
     <table>
       <tr>
-        <th >セット名</th>
-        <th >作成者名</th>
+        <th>セット名</th>
+        <th>作成者名</th>
+        <th>学習回数</th>
       </tr>
       {% for set in t_sets %}
       <tr>
         <td>{{ set.name }}</td>
         <td>{{ set.user.name }}</td>
+        <td>{{ set.learn_count }}</td>
         <td><a href="{{ url_for('sets.set_start', set_id=set.id) }}">始める</a></td>
       </tr>
       {% endfor %}
