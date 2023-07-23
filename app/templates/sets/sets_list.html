@@ -63,25 +63,5 @@
       </tr>
       {% endfor %}
     </table>
-
-    <!-- roleがTrue(先生)の場合のみ生徒の解答を表示 -->
-    {% if current_user.role == 1 %}
-        <table class="table">
-            <thead>
-                <tr>
-                    <th>問題</th>
-                    <th>答え</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for question, answer in questions_and_answers %}
-                <tr>
-                    <td>{{ question.sentence }}</td>
-                    <td>{{ answer }}</td>
-                </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    {% endif %}
 </body>
 </html>

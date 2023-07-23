@@ -1,8 +1,8 @@
-from flask import Blueprint, render_template, redirect, request, url_for, abort,flash
+from flask import Blueprint, render_template, redirect, request, url_for, abort,flash,jsonify
 from flask_login import current_user
 
 from app import app
-from app.models import db, User, QuestionSet,Question
+from app.models import db, User, QuestionSet,Question,UserAnswer
 
 sets = Blueprint("sets",__name__)
 
@@ -17,7 +17,7 @@ def set_list():
   else: # GET
     student_sets = QuestionSet.query.filter(QuestionSet.user_id == current_user.id).all()
     #ログイン中の生徒の問題セットと教員の問題セットを表示する
-    teachers = db.session.query(User.id).filter(User.role==1).one()
+    teachers = db.session.query(User.id).filter(User.role==1).first()
     teacher_sets = QuestionSet.query.filter(QuestionSet.user_id == teachers.id).all()
     return render_template("sets/sets_list.html", t_sets=teacher_sets ,s_sets=student_sets)
 
@@ -110,5 +110,18 @@ def set_start(set_id):
       'questionset_id': question.questionset_id
     }
     questions_json.append(question_dict)
-
+  
   return render_template("sets/sets_start.html", set=set,questions=questions_json)
+
+@sets.route('/sets/submit_answer', methods=['POST'])
+def submit_answer():
+    selected_answer = request.form.get('chosenAnswer')
+    question_id = request.form.get('questionId')
+    questionset_id = request.form.get('questionSetId')
+    user_id = current_user.get_id()
+
+    answer = UserAnswer(user_id=user_id, questionset_id=questionset_id, question_id=question_id, selected_answer=selected_answer)
+    db.session.add(answer)
+    db.session.commit()
+
+    return jsonify({'success': True})

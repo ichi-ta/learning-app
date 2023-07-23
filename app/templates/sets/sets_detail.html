@@ -15,8 +15,31 @@
         {% endfor %}
         </ul>
     {% endif %}
-  {% endwith %}
+    {% endwith %}
     <a href="{{ url_for('sets.set_edit', set_id=set.id) }}">編集</a>
     <a href="{{ url_for('sets.set_start', set_id=set.id) }}">始める</a>
+
+    <!-- 教師のみ表示 -->
+    {% if current_user.role == 1 %}
+    <h2>生徒の解答</h2>
+    <table>
+        <tr>
+          <th>問題</th>
+          <th>回答した生徒</th>
+          <th>回答した選択肢</th>
+          <th>正解の選択肢</th>
+        </tr>
+        {% for question in set.questions %}
+        {% for answer in question.answers %}
+        <tr>
+            <td>{{ question.sentence }}</td><!-- 問題文を表示 -->
+            <td>{{ answer.user.name }}</td> <!-- 生徒の名前を表示 -->
+            <td>{{ answer.selected_answer }}</td> <!-- 生徒の回答を表示 -->
+            <td>{{ question.correctans }}</td> <!-- 正しい答えを表示 -->
+        </tr>
+        {% endfor %}
+        {% endfor %}
+      </table>      
+    {% endif %}
 </body>
 </html>
