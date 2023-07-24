@@ -3,76 +3,87 @@
 <head>
     <meta charset="UTF-8">
     <title>問題セットの編集</title>
+    <link rel="stylesheet" href="{{url_for('static', filename='edit_style.css')}}">
 </head>
 <body>
-  <h1>問題セットの編集: {{ set.name }}</h1>
-  <form action="{{ url_for('sets.set_edit', set_id=set.id) }}" method="POST">
-    <input type="hidden" name="action" value="update_set">
-    セット名:<input name="set_name" value="{{ set.name }}"></input>
-    <input type="submit" value="セット名を変更">
-  </form>
-  <form action="{{ url_for('sets.set_edit', set_id=set.id) }}" method="POST">
-    <input type="hidden" name="action" value="add_question">
-    <div>
-        問題文:<input name="question_sentence"></input>
+    <div class="container">
+        <h1>問題セットの編集: {{ set.name }}</h1>
+        <form action="{{ url_for('sets.set_edit', set_id=set.id) }}" method="POST">
+            <input type="hidden" name="action" value="update_set">
+            <div class="form-group">
+                <label for="set_name">セット名:</label>
+                <input type="text" name="set_name" id="set_name" value="{{ set.name }}">
+                <input type="submit" value="セット名を変更">
+            </div>
+        </form>
+        <form action="{{ url_for('sets.set_edit', set_id=set.id) }}" method="POST">
+            <input type="hidden" name="action" value="add_question">
+            <div class="form-group">
+                <label for="question_sentence">問題文:</label>
+                <input type="text" name="question_sentence" id="question_sentence">
+            </div>
+            <div class="form-group">
+                <label for="choice1">選択肢1:</label>
+                <input type="text" name="choice1" id="choice1">
+            </div>
+            <div class="form-group">
+                <label for="choice2">選択肢2:</label>
+                <input type="text" name="choice2" id="choice2">
+            </div>
+            <div class="form-group">
+                <label for="choice3">選択肢3:</label>
+                <input type="text" name="choice3" id="choice3">
+            </div>
+            <div class="form-group">
+                <label for="choice4">選択肢4:</label>
+                <input type="text" name="choice4" id="choice4">
+            </div>
+            <div class="form-group">
+                <label for="correctans">正解の選択肢を1~4で入力:</label>
+                <input type="number" name="correctans" id="correctans" min="1" max="4">
+            </div>
+            <div class="form-group">
+                <input type="submit" value="新しい問題を追加">
+            </div>
+        </form>
+        <a href="{{ url_for('sets.set_detail', set_id=set.id) }}">戻る(×マーク)</a>
+        <h2>問題一覧</h2>
+        <!-- 問題の削除を通知する -->
+        {% with messages = get_flashed_messages() %}
+        {% if messages %}
+        <ul class="flashes">
+            {% for message in messages %}
+            <li>{{ message }}</li>
+            {% endfor %}
+        </ul>
+        {% endif %}
+        {% endwith %}
+        <table>
+            <tr>
+                <th>問題文</th>
+                <th>選択肢1</th>
+                <th>選択肢2</th>
+                <th>選択肢3</th>
+                <th>選択肢4</th>
+                <th>正解</th>
+                <th></th>
+            </tr>
+            {% for question in set.questions %}
+            <tr>
+                <td>{{ question.sentence }}</td>
+                <td>{{ question.choice1 }}</td>
+                <td>{{ question.choice2 }}</td>
+                <td>{{ question.choice3 }}</td>
+                <td>{{ question.choice4 }}</td>
+                <td>{{ question.correctans }}</td>
+                <td>
+                    <form method="POST" action="{{ url_for('sets.delete_question', question_id=question.id) }}">
+                        <input type="submit" value="削除">
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </table>
     </div>
-    <div>
-        選択肢1:<input name="choice1"></input>
-    </div>
-    <div>
-        選択肢2:<input name="choice2"></input>
-    </div>
-    <div>
-        選択肢3:<input name="choice3"></input>
-    </div>
-    <div>
-        選択肢4:<input name="choice4"></input>
-    </div>
-    <div>
-        正解の選択肢を1~4で入力:<input name="correctans"></input>
-    </div>
-    <div>
-        <input type="submit" value="新しい問題を追加">
-    </div>
-  </form>
-  <a href="{{ url_for('sets.set_detail', set_id=set.id) }}">戻る(×マーク)</a>
-  <h2>問題一覧</h2>
-
-  <!-- 問題の削除を通知する -->
-  {% with messages = get_flashed_messages() %}
-    {% if messages %}
-      <ul class=flashes>
-      {% for message in messages %}
-        {{ message }}
-      {% endfor %}
-      </ul>
-    {% endif %}
-  {% endwith %}
-
-  <table>
-      <tr>
-        <th>問題文</th>
-        <th>選択肢1</th>
-        <th>選択肢2</th>
-        <th>選択肢3</th>
-        <th>選択肢4</th>
-        <th>正解</th>
-      </tr>
-      {% for question in set.questions %}
-      <tr>
-        <td>{{ question.sentence }}</td>
-        <td>{{ question.choice1 }}</td>
-        <td>{{ question.choice2 }}</td>
-        <td>{{ question.choice3 }}</td>
-        <td>{{ question.choice4 }}</td>
-        <td>{{ question.correctans }}</td>
-        <td>
-          <form method="POST" action="{{ url_for('sets.delete_question', question_id=question.id) }}">
-            <input type="submit" value="削除">
-          </form>
-        </td>
-      </tr>
-      {% endfor %}
-  </table>
 </body>
 </html>
