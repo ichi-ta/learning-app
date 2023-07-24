@@ -23,6 +23,7 @@ class User(UserMixin, db.Model):
     name = db.Column(db.String(128))
     role = db.Column(db.Boolean, default=False, nullable=False)
     question_sets = db.relationship('QuestionSet', backref='user', lazy=True)
+    answers = db.relationship('UserAnswer', back_populates='user', lazy=True)  
 
     mail = db.Column(db.String(128), unique=True)
     password = db.Column(db.String(128))
@@ -37,12 +38,15 @@ class User(UserMixin, db.Model):
 
 class QuestionSet(db.Model):
     __tablename__ = 'questionset'
-    
+
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(128))
     user_id = db.Column(db.Integer, db.ForeignKey('Users.id'))
+    learn_count = db.Column(db.Integer, default=0)
+    good_count = db.Column(db.Integer, default=0)
 
     questions = db.relationship("Question", back_populates="questionset")
+    answers = db.relationship('UserAnswer', back_populates='questionset', lazy=True)  
 
 class Question(db.Model):
     __tablename__ = 'question'
@@ -57,3 +61,17 @@ class Question(db.Model):
     questionset_id = db.Column(db.Integer, db.ForeignKey('questionset.id'))
 
     questionset = db.relationship("QuestionSet", back_populates="questions")
+    answers = db.relationship('UserAnswer', back_populates='question', lazy=True)  
+
+class UserAnswer(db.Model):
+    __tablename__ = 'useranswer'
+
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey('Users.id'))
+    question_id = db.Column(db.Integer, db.ForeignKey('question.id'))
+    questionset_id = db.Column(db.Integer, db.ForeignKey('questionset.id'))  
+    selected_answer = db.Column(db.String(128))
+
+    user = db.relationship("User", back_populates="answers")
+    question = db.relationship("Question", back_populates="answers")
+    questionset = db.relationship("QuestionSet", back_populates="answers") 

@@ -50,6 +50,29 @@
         } else {
             alert("不正解！");
         }
+        submitAnswer(chosenAnswer);
+    }
+
+    function submitAnswer(answer) {
+        const formData = new FormData();
+        formData.append('chosenAnswer', answer);
+        formData.append('questionId', questions[currentQuestionIndex].id);
+        formData.append('questionSetId', questions[currentQuestionIndex].questionset_id);
+        fetch('/sets/submit_answer', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                console.log('Answer submitted!');
+            } else {
+                console.log('An error occurred.');
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+        });
     }
     </script>
 </head>
