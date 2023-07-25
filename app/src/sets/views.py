@@ -17,9 +17,12 @@ def set_list():
     return redirect(url_for('sets.set_list'))
   else: # GET
     student_sets = QuestionSet.query.filter(QuestionSet.user_id == current_user.id).all()
-    teachers = User.query.filter(User.role==1).all()
-    teacher_sets = QuestionSet.query.filter(QuestionSet.user_id == teachers[0].id).all()
-    return render_template("sets/sets_list.html", t_sets=teacher_sets ,s_sets=student_sets)
+    teachers = User.query.filter_by(role=1).all()
+    teacher_sets = {}
+    for teacher in teachers:
+        question_sets = teacher.question_sets
+        teacher_sets[teacher] = question_sets
+    return render_template("sets/sets_list.html", t=teachers, s_sets=student_sets)
 
 @sets.route("/sets/<int:set_id>", methods=["GET"])
 def set_detail(set_id):
