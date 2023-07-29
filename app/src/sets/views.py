@@ -17,19 +17,19 @@ def set_list():
     return redirect(url_for('sets.set_list'))
   else: # GET
     student_sets = QuestionSet.query.filter(QuestionSet.user_id == current_user.id).all()
-    teachers = User.query.filter(User.role==1).all()
-    teacher_sets = QuestionSet.query.filter(QuestionSet.user_id == teachers[0].id).all()
-    return render_template("sets/sets_list.html", t_sets=teacher_sets ,s_sets=student_sets)
+    teachers = User.query.filter_by(role=1).all()
+    return render_template("sets/sets_list.html", t=teachers, s_sets=student_sets)
 
 @sets.route("/sets/<int:set_id>", methods=["GET"])
 def set_detail(set_id):
     set = QuestionSet.query.get(set_id)
     if set is None:
         abort(404)
-
     answers = [question.correctans for question in set.questions]
     return render_template("sets/sets_detail.html", set=set, answers=answers)
 
+    answers = [question.correctans for question in set.questions]
+    return render_template("sets/sets_detail.html", set=set, answers=answers)
 
 @sets.route("/sets/<int:set_id>/edit", methods=["GET", "POST"])
 def set_edit(set_id):

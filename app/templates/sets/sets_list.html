@@ -62,13 +62,15 @@
         <th>作成者名</th>
         <th>学習回数</th>
       </tr>
-      {% for t_set in t_sets %}
-      <tr>
-        <td>{{ t_set.name }}</td>
-        <td>{{ t_set.user.name }}</td>
-        <td>{{ t_set.learn_count }}</td>
-        <td><a href="{{ url_for('sets.set_start', set_id=t_set.id) }}">始める</a></td>
-      </tr>
+      {% for teacher in t %}
+        {% for question_set in teacher.question_sets %}
+          <tr>
+            <td>{{ question_set.name }}</td>
+            <td>{{ teacher.name }}</td>
+            <td>{{ question_set.learn_count }}</td>
+            <td><a href="{{ url_for('sets.set_start', set_id=question_set.id) }}">始める</a></td>
+          </tr>
+        {% endfor %}
       {% endfor %}
     </table>
   </div>
