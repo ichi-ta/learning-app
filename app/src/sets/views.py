@@ -33,7 +33,6 @@ def set_detail(set_id):
     answers = [question.correctans for question in set.questions]
     return render_template("sets/sets_detail.html", set=set, answers=answers)
 
-
 @sets.route("/sets/<int:set_id>/edit", methods=["GET", "POST"])
 def set_edit(set_id):
   set = QuestionSet.query.get(set_id)
