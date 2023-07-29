@@ -18,10 +18,6 @@ def set_list():
   else: # GET
     student_sets = QuestionSet.query.filter(QuestionSet.user_id == current_user.id).all()
     teachers = User.query.filter_by(role=1).all()
-    teacher_sets = {}
-    for teacher in teachers:
-        question_sets = teacher.question_sets
-        teacher_sets[teacher] = question_sets
     return render_template("sets/sets_list.html", t=teachers, s_sets=student_sets)
 
 @sets.route("/sets/<int:set_id>", methods=["GET"])
@@ -29,6 +25,8 @@ def set_detail(set_id):
     set = QuestionSet.query.get(set_id)
     if set is None:
         abort(404)
+    answers = [question.correctans for question in set.questions]
+    return render_template("sets/sets_detail.html", set=set, answers=answers)
 
     answers = [question.correctans for question in set.questions]
     return render_template("sets/sets_detail.html", set=set, answers=answers)
